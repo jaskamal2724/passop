@@ -1,0 +1,182 @@
+import React, { useEffect, useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEye } from '@fortawesome/free-solid-svg-icons'
+import { faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'
+import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
+const Manager = () => {
+    const [showpassword, setShowPassword] = useState(true);
+    const [showpassword1, setShowPassword1] = useState(true);
+    const [passarray, setPassarray] = useState([]);
+    const handleShowPassword = () => setShowPassword(!showpassword);
+    const handleShowPassword1 = () => setShowPassword1(!showpassword1);
+    const [form, setForm] = useState({ site: '', username: "", password: "" });
+
+    useEffect(() => {
+        let passwords = localStorage.getItem('passwords');
+        if (passwords) {
+            setPassarray(JSON.parse(passwords));
+        }
+        console.log(passarray)
+    }, []);
+
+    const savepassword = () => {
+        setPassarray([...passarray, form]);
+        localStorage.setItem('passwords', JSON.stringify([...passarray, form]))
+        console.log(passarray);
+    }
+
+    const handlechange = (e) => {
+        setForm({ ...form, [e.target.name]: e.target.value });
+    }
+
+    const copyText = (text) => {
+        navigator.clipboard.writeText(text);
+        toast('Copied to Clipboard', {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+
+        });
+    }
+
+    return (
+        <>
+            <ToastContainer
+                position="top-right"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="ligth"
+
+            />
+            {/* Same as */}
+            <ToastContainer />
+            <section className="text-gray-600 body-font">
+                <div className="container px-5 py-24 mx-auto">
+                    <div className="flex flex-col text-center w-full mb-12">
+                        <h1>
+                            <span className='text-purple-700'> &lt;</span>
+                            <span>Pass</span>
+                            <span className='text-purple-700'>OP/&gt;</span>
+                        </h1>
+                        <p>Never Forget, Always Secure</p>
+                    </div>
+
+
+                    <div className="flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end">
+
+                        <div className="relative flex-grow w-full ">
+                            <label htmlFor="full-name" className="leading-7 text-sm text-gray-600">Web URL</label>
+                            <input onChange={handlechange} value={form.site} type="email" id="full-name" name="site" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" placeholder='xyz.com' />
+                        </div>
+
+                        <div className="relative flex-grow w-full">
+                            <label htmlFor="email" className="leading-7 text-sm text-gray-600">Username</label>
+                            <input onChange={handlechange} value={form.username} type="text" id="username" name="username" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" placeholder='John' />
+                        </div>
+
+                        <div className="relative flex-grow w-full">
+                            <label htmlFor="email" className="leading-7 text-sm text-gray-600">Password</label>
+                            <FontAwesomeIcon className='mx-2 text-purple-500' icon={(showpassword) ? faEye : faEyeSlash} onClick={handleShowPassword} />
+                            <input onChange={handlechange} value={form.password} type={showpassword ? 'password' : 'text'} id="email" name="password" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+                        </div>
+
+                    </div>
+                    <div className='container py-10 px-10 mx-0 min-w-full flex flex-col items-center'>
+
+                        <button onClick={savepassword} className="btn1 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">
+
+                            <lord-icon
+                                src="https://cdn.lordicon.com/jgnvfzqg.json"
+                                trigger="hover"
+                                style={{ "width": "30px", "height": "30px" }}>
+                            </lord-icon>
+                            Save Password ..
+                        </button>
+
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <div >
+                <div>
+                    <h1 className='text-center ph text-purple-700'>Your Passwords</h1>
+                    {passarray.length === 0 && <div>No Passwords</div>}
+                </div>
+
+                {passarray.length != 0 &&
+                    <table className='mx-auto w-2/3 overflowhidden'>
+                        <thead className='rounded-lg'>
+                            <tr className="rounded-lg">
+                                <th className='rounded-lg'> Web URL</th>
+                                <th>Username</th>
+                                <th>Password <FontAwesomeIcon className=' mx-1 text-purple-500' icon={(showpassword1) ? faEye : faEyeSlash} onClick={handleShowPassword1} /> </th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {passarray.map((item) => {
+                                return <tr>
+                                    <td > <a href={item.site} target='_blank'>{item.site}</a>
+                                        <lord-icon
+                                            src="https://cdn.lordicon.com/depeqmsz.json"
+                                            trigger="hover"
+                                            style={{ "width": "25px", "height": "25px","margin":"0px 20px"}} onClick={() => copyText(item.site)}>
+                                        </lord-icon>
+                                    </td>
+
+                                    <td>{item.username}
+                                        <lord-icon
+                                            src="https://cdn.lordicon.com/depeqmsz.json"
+                                            trigger="hover"
+                                            style={{ "width": "25px", "height": "25px","margin":"0px 20px" }} onClick={() => copyText(item.username)}>
+                                        </lord-icon>
+                                    </td>
+
+                                    <td id="passwordField">{showpassword1 ? '******'.repeat(item.password.length) : item.password}
+
+                                        <lord-icon
+                                            src="https://cdn.lordicon.com/depeqmsz.json"
+                                            trigger="hover"
+                                            style={{ "width": "25px", "height": "25px" ,"margin":"0px 20px"}} onClick={() => copyText(item.password)}>
+                                        </lord-icon>
+
+                                    </td>
+
+                                    <td>
+                                        <FontAwesomeIcon className='ac' icon={faPenToSquare} />
+                                        <FontAwesomeIcon className='ac' icon={faTrash} />
+
+                                    </td>
+                                </tr>
+                            })}
+
+
+                        </tbody>
+                    </table>}
+            </div>
+
+        </>
+    )
+}
+
+export default Manager
