@@ -106,7 +106,7 @@ const Manager = () => {
                                 trigger="hover"
                                 style={{ "width": "30px", "height": "30px" }}>
                             </lord-icon>
-                            Save Password 
+                            Save Password !
                         </button>
 
 
