@@ -6,7 +6,7 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { v4 as uuidv4 } from 'uuid';
 
 const Manager = () => {
     const [showpassword, setShowPassword] = useState(true);
@@ -15,6 +15,7 @@ const Manager = () => {
     const handleShowPassword = () => setShowPassword(!showpassword);
     const handleShowPassword1 = () => setShowPassword1(!showpassword1);
     const [form, setForm] = useState({ site: '', username: "", password: "" });
+    const [Editid, setEditid] = useState(null);
 
     useEffect(() => {
         let passwords = localStorage.getItem('passwords');
@@ -25,9 +26,29 @@ const Manager = () => {
     }, []);
 
     const savepassword = () => {
-        setPassarray([...passarray, form]);
-        localStorage.setItem('passwords', JSON.stringify([...passarray, form]))
+        setPassarray([...passarray, {...form,id:uuidv4()}]);
+        localStorage.setItem('passwords', JSON.stringify([...passarray, {...form,id:uuidv4()}]))
         console.log(passarray);
+        setForm({site:'',username:'',password:''})
+    }
+
+    const deletepassword = (id) => {
+        console.log("Deleting password with id : ",id); 
+        const filteredarrray = passarray.filter((item)=>item.id !==id);
+        setPassarray(filteredarrray);
+        localStorage.setItem('passwords', JSON.stringify(filteredarrray));
+        
+    }
+
+    const editpassword = (id) => {
+        console.log("Editing password with id : ",id);
+        const passwordtoedit = passarray.filter((item)=>item.id ===id);
+        setForm({site:passwordtoedit[0].site,username:passwordtoedit[0].username,password:passwordtoedit[0].password});
+        setEditid(id);
+
+        const filteredarrray = passarray.filter((item)=>item.id !==id);
+        setPassarray(filteredarrray);
+        localStorage.setItem('passwords', JSON.stringify(filteredarrray));
     }
 
     const handlechange = (e) => {
@@ -135,7 +156,7 @@ const Manager = () => {
                         </thead>
                         <tbody>
                             {passarray.map((item) => {
-                                return <tr>
+                                return <tr key={item.id}>
                                     <td > <a href={item.site} target='_blank'>{item.site}</a>
                                         <lord-icon
                                             src="https://cdn.lordicon.com/depeqmsz.json"
@@ -163,8 +184,8 @@ const Manager = () => {
                                     </td>
 
                                     <td>
-                                        <FontAwesomeIcon className='ac' icon={faPenToSquare} />
-                                        <FontAwesomeIcon className='ac' icon={faTrash} />
+                                        <FontAwesomeIcon className='ac' icon={faPenToSquare} onClick={()=>{editpassword(item.id)}} />
+                                        <FontAwesomeIcon className='ac' icon={faTrash} onClick={()=>{deletepassword(item.id)}}/>
 
                                     </td>
                                 </tr>
