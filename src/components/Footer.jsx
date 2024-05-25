@@ -9,8 +9,8 @@ const Footer = () => {
                 <div className='text-center'>
                 <span className='text-purple-700'>© 2024  &lt;</span>
                             <span>Pass</span>
-                            <span className='text-purple-700'>OP/&gt;</span>
-                <p></p>
+                            <span className='text-purple-700'>OP/&gt;  - All Rights Reserved</span>
+               
                 </div>
             </footer>
           
