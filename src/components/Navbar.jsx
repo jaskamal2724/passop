@@ -20,7 +20,7 @@ const Navbar = () => {
                     </a>
                     <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
                         
-                    </nav>
+                    </nav> 
                     <a href="https://github.com/joy2724/passop" target='_blank'>
                     <button className="btn inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-purple-200 rounded text-base mt-4 md:mt-0"> <img src={github} className='gi' alt="" /> 
                         GitHub

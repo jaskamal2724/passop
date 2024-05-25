@@ -7,6 +7,8 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { v4 as uuidv4 } from 'uuid';
+// import generator from 'generate-password';
+import  {randomPassword} from 'secure-random-password';
 
 const Manager = () => {
     const [showpassword, setShowPassword] = useState(true);
@@ -109,6 +111,25 @@ const Manager = () => {
         });
     }
 
+    const generateStrongPassword = () => {
+        return randomPassword({
+            length: 12,
+            characters: [
+                { characters: 'abcdefghijklmnopqrstuvwxyz', exactly: 1 },
+                { characters: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', exactly: 1 },
+                { characters: '0123456789', exactly: 1 },
+                { characters: '!@#$%^&*()', exactly: 1 },
+                { characters: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()', length: 8 },
+            ],
+        });
+    };
+
+
+    const handlepassword=()=>{
+        const newpass = generateStrongPassword();
+        setForm({...form, password:newpass})
+    }
+
     return (
         <>
             <ToastContainer
@@ -124,7 +145,7 @@ const Manager = () => {
                 theme="light"
 
             />
-           
+
             <section className="text-gray-600 body-font">
                 <div className="container px-5 py-24 mx-auto">
                     <div className="flex flex-col text-center w-full mb-12">
@@ -161,9 +182,9 @@ const Manager = () => {
                         </div>
 
                     </div>
-                    <div className='container py-10 px-10 mx-0 min-w-full flex flex-col items-center'>
+                    <div className='container py-10 px-10 mx-0 min-w-full flex  justify-center  items-center'>
 
-                        <button onClick={savepassword} className="btn1 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">
+                        <button onClick={savepassword} className="btn1 text-white bg-indigo-500 border-0 py-2 px-8 mx-5 focus:outline-none hover:bg-indigo-600 rounded text-lg">
 
                             <lord-icon
                                 src="https://cdn.lordicon.com/jgnvfzqg.json"
@@ -171,6 +192,15 @@ const Manager = () => {
                                 style={{ "width": "30px", "height": "30px" }}>
                             </lord-icon>
                             Save Password
+                        </button>
+
+                        <button onClick={handlepassword} className="btn1 text-white bg-indigo-500 border-0 py-2 px-8 mx-5 focus:outline-none hover:bg-indigo-600 rounded text-lg">
+                            <lord-icon
+                                src="https://cdn.lordicon.com/ifsxxxte.json"
+                                trigger="hover"
+                                style={{ "width": "30px", "height": "30px" }}>
+                            </lord-icon>
+                            Generate Password
                         </button>
 
 
