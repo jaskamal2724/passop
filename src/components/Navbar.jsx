@@ -6,11 +6,17 @@ import github from '../images/github.png'
 const Navbar = () => {
     return (
         <>
-            <header className="text-gray-600 body-font">
+            <header className="text-gray-600 body-font" >
                 <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
                     <a className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
                         <img src={passimg} alt="" className='pi'/>
-                        <span className="ml-3 text-xl text-purple-900">PassOP</span>
+                        <span className="ml-3 text-xl text-purple-900">PassOP
+                        <lord-icon
+                                src="https://cdn.lordicon.com/kpustzzg.json"
+                                trigger="hover"
+                                style={{"width":"50px","height":"50px",}}>
+                            </lord-icon>
+                        </span>
                     </a>
                     <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
                         

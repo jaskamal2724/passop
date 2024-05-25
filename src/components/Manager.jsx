@@ -26,27 +26,66 @@ const Manager = () => {
     }, []);
 
     const savepassword = () => {
-        setPassarray([...passarray, {...form,id:uuidv4()}]);
-        localStorage.setItem('passwords', JSON.stringify([...passarray, {...form,id:uuidv4()}]))
+
+        if (!form.site || !form.username || !form.password) {
+            toast('Please fill in all fields', {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            return;
+        }
+
+        toast('Saved Successfully', {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+
+        });
+        setPassarray([...passarray, { ...form, id: uuidv4() }]);
+        localStorage.setItem('passwords', JSON.stringify([...passarray, { ...form, id: uuidv4() }]))
         console.log(passarray);
-        setForm({site:'',username:'',password:''})
+        setForm({ site: '', username: '', password: '' })
     }
 
     const deletepassword = (id) => {
-        console.log("Deleting password with id : ",id); 
-        const filteredarrray = passarray.filter((item)=>item.id !==id);
-        setPassarray(filteredarrray);
-        localStorage.setItem('passwords', JSON.stringify(filteredarrray));
-        
+        toast('Deleted Successfully', {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+
+        });
+        console.log("Deleting password with id : ", id);
+        let c = confirm("Are you sure you want to delete this password?");
+        if (c) {
+            const filteredarrray = passarray.filter((item) => item.id !== id);
+            setPassarray(filteredarrray);
+            localStorage.setItem('passwords', JSON.stringify(filteredarrray));
+        }
     }
 
     const editpassword = (id) => {
-        console.log("Editing password with id : ",id);
-        const passwordtoedit = passarray.filter((item)=>item.id ===id);
-        setForm({site:passwordtoedit[0].site,username:passwordtoedit[0].username,password:passwordtoedit[0].password});
+        console.log("Editing password with id : ", id);
+        const passwordtoedit = passarray.filter((item) => item.id === id);
+        setForm({ site: passwordtoedit[0].site, username: passwordtoedit[0].username, password: passwordtoedit[0].password });
         setEditid(id);
 
-        const filteredarrray = passarray.filter((item)=>item.id !==id);
+        const filteredarrray = passarray.filter((item) => item.id !== id);
         setPassarray(filteredarrray);
         localStorage.setItem('passwords', JSON.stringify(filteredarrray));
     }
@@ -82,18 +121,22 @@ const Manager = () => {
                 pauseOnFocusLoss
                 draggable
                 pauseOnHover
-                theme="ligth"
+                theme="light"
 
             />
-            {/* Same as */}
-            <ToastContainer />
+           
             <section className="text-gray-600 body-font">
                 <div className="container px-5 py-24 mx-auto">
                     <div className="flex flex-col text-center w-full mb-12">
-                        <h1>
+                        <h1 className='text-3xl'>
                             <span className='text-purple-700'> &lt;</span>
                             <span>Pass</span>
                             <span className='text-purple-700'>OP/&gt;</span>
+                            <lord-icon
+                                src="https://cdn.lordicon.com/kpustzzg.json"
+                                trigger="hover"
+                                style={{ "width": "50px", "height": "50px", }}>
+                            </lord-icon>
                         </h1>
                         <p>Never Forget, Always Secure</p>
                     </div>
@@ -102,19 +145,19 @@ const Manager = () => {
                     <div className="flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end">
 
                         <div className="relative flex-grow w-full ">
-                            <label htmlFor="full-name" className="leading-7 text-sm text-gray-600">Web URL</label>
-                            <input onChange={handlechange} value={form.site} type="email" id="full-name" name="site" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" placeholder='xyz.com' />
+                            <label htmlFor="full-name" className="  leading-7 text-sm text-gray-600">Web URL</label>
+                            <input onChange={handlechange} value={form.site} type="email" id="full-name" name="site" className="border-2 border-blue-400 w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" placeholder='xyz.com' />
                         </div>
 
                         <div className="relative flex-grow w-full">
                             <label htmlFor="email" className="leading-7 text-sm text-gray-600">Username</label>
-                            <input onChange={handlechange} value={form.username} type="text" id="username" name="username" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" placeholder='John' />
+                            <input onChange={handlechange} value={form.username} type="text" id="username" name="username" className="border-2 border-blue-400  w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" placeholder='John' />
                         </div>
 
                         <div className="relative flex-grow w-full">
                             <label htmlFor="email" className="leading-7 text-sm text-gray-600">Password</label>
                             <FontAwesomeIcon className='mx-2 text-purple-500' icon={(showpassword) ? faEye : faEyeSlash} onClick={handleShowPassword} />
-                            <input onChange={handlechange} value={form.password} type={showpassword ? 'password' : 'text'} id="email" name="password" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+                            <input onChange={handlechange} value={form.password} type={showpassword ? 'password' : 'text'} id="email" name="password" className=" border-2 border-blue-400  w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
                         </div>
 
                     </div>
@@ -127,7 +170,7 @@ const Manager = () => {
                                 trigger="hover"
                                 style={{ "width": "30px", "height": "30px" }}>
                             </lord-icon>
-                            Save Password 
+                            Save Password
                         </button>
 
 
@@ -161,7 +204,7 @@ const Manager = () => {
                                         <lord-icon
                                             src="https://cdn.lordicon.com/depeqmsz.json"
                                             trigger="hover"
-                                            style={{ "width": "25px", "height": "25px","margin":"0px 20px"}} onClick={() => copyText(item.site)}>
+                                            style={{ "width": "25px", "height": "25px", "margin": "0px 20px" }} onClick={() => copyText(item.site)}>
                                         </lord-icon>
                                     </td>
 
@@ -169,7 +212,7 @@ const Manager = () => {
                                         <lord-icon
                                             src="https://cdn.lordicon.com/depeqmsz.json"
                                             trigger="hover"
-                                            style={{ "width": "25px", "height": "25px","margin":"0px 20px" }} onClick={() => copyText(item.username)}>
+                                            style={{ "width": "25px", "height": "25px", "margin": "0px 20px" }} onClick={() => copyText(item.username)}>
                                         </lord-icon>
                                     </td>
 
@@ -178,14 +221,14 @@ const Manager = () => {
                                         <lord-icon
                                             src="https://cdn.lordicon.com/depeqmsz.json"
                                             trigger="hover"
-                                            style={{ "width": "25px", "height": "25px" ,"margin":"0px 20px"}} onClick={() => copyText(item.password)}>
+                                            style={{ "width": "25px", "height": "25px", "margin": "0px 20px" }} onClick={() => copyText(item.password)}>
                                         </lord-icon>
 
                                     </td>
 
                                     <td>
-                                        <FontAwesomeIcon className='ac' icon={faPenToSquare} onClick={()=>{editpassword(item.id)}} />
-                                        <FontAwesomeIcon className='ac' icon={faTrash} onClick={()=>{deletepassword(item.id)}}/>
+                                        <FontAwesomeIcon className='ac' icon={faPenToSquare} onClick={() => { editpassword(item.id) }} />
+                                        <FontAwesomeIcon className='ac' icon={faTrash} onClick={() => { deletepassword(item.id) }} />
 
                                     </td>
                                 </tr>
